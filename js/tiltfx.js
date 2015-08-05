@@ -241,6 +241,7 @@
 		// mousemove event..
 		var screen;
 		if(self.options.mouseTarget !== null){
+			console.log(self.options.mouseTarget);
 			if(self.options.mouseTarget == 'parent'){
 				screen = this.tiltWrapper.parentElement;
 			} else {
