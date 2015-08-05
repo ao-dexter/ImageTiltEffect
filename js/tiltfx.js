@@ -189,7 +189,8 @@
 	};
 	
 	TiltFx.prototype.trackOn = function(ev){
-		var self = this;
+		var self = this, 
+			moveOpts = self.options.movement;
 		requestAnimationFrame(function() {
 					// mouse position relative to the document.
 				var mousepos = getMousePos(ev),
