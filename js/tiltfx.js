@@ -200,7 +200,7 @@
 		requestAnimationFrame(function() {
 					// mouse position relative to the document.
 					var mousepos;
-					if(self.trackMouse){
+					if(self.options.trackMouse){
 						mousepos = getMousePos(ev);
 					} else {
 						mousepos = getRandomPos();
