@@ -274,10 +274,7 @@
 		}
 		
 		if(!self.options.trackMouse && self.options.auto && self.options.shake > 0){
-			setInterval(function(){
-				this.trackOn(null);
-			}, self.options.shake)
-			
+			setInterval(self.trackOn, self.options.shake);
 		}
 		
 		
