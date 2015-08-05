@@ -354,16 +354,17 @@
 
 	function init() {
 		
-		tiltFxArr = [];
+		tiltObjs = {};
 		// search for imgs with the class "tilt-effect"
 		[].slice.call(document.querySelectorAll('img.tilt-effect')).forEach(function(img) {
 			tiltOptions = JSON.parse(img.getAttribute('data-tilt-options'));
 			//t = new TiltFx(img, JSON.parse(img.getAttribute('data-tilt-options')));
 		//	tiltFxArr.push(eval(tiltOptions.id = new TiltFx(img, JSON.parse(img.getAttribute('data-tilt-options')))));
-			dexter = new TiltFx(img, JSON.parse(img.getAttribute('data-tilt-options')));
-			tiltFxArr.push(dexter);
+		//	dexter = new TiltFx(img, JSON.parse(img.getAttribute('data-tilt-options')));
+		//	tiltFxArr.push(dexter);
+			tiltObjs[tiltOptions.id] =  new TiltFx(img, tiltOptions);
 		});
-		window.tiltFxArr = tiltFxArr;
+		window.tiltObjs = tiltObjs;
 	}
 
 	init();
