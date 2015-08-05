@@ -351,10 +351,14 @@
 	};
 
 	function init() {
+		
+		tiltFxArr = [];
 		// search for imgs with the class "tilt-effect"
 		[].slice.call(document.querySelectorAll('img.tilt-effect')).forEach(function(img) {
-			new TiltFx(img, JSON.parse(img.getAttribute('data-tilt-options')));
+			thisTilt = new TiltFx(img, JSON.parse(img.getAttribute('data-tilt-options')));
+			tiltFxArr.push(thisTile);
 		});
+		window.tiltFxArr = tiltFxArr;
 	}
 
 	init();
