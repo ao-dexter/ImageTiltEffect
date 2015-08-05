@@ -189,14 +189,15 @@
 	};
 	
 	TiltFx.prototype.trackOn = function(ev){
-		var self = this, 
+		var self = this,
+			screen = self.screen,
 			moveOpts = self.options.movement;
 		requestAnimationFrame(function() {
 					// mouse position relative to the document.
 				var mousepos = getMousePos(ev),
 					// document scrolls.
 					docScrolls = {left : document.body.scrollLeft + document.documentElement.scrollLeft, top : document.body.scrollTop + document.documentElement.scrollTop},
-					bounds = self.tiltWrapper.getBoundingClientRect(),
+					bounds = screen.getBoundingClientRect(),
 					// mouse position relative to the main element (tiltWrapper).
 					relmousepos = {
 						x : mousepos.x - bounds.left - docScrolls.left,
@@ -221,6 +222,7 @@
 	
 	TiltFx.prototype.trackOff = function(ev){
 		var self = this, 
+			screen = self.screen,
 			moveOpts = self.options.movement;
 		setTimeout(function() {
 			for(var i = 0, len = self.imgElems.length; i < len; ++i) {
@@ -237,6 +239,7 @@
 	TiltFx.prototype._initEvents = function() {
 		var self = this,
 			moveOpts = self.options.movement;
+			
 
 		// mousemove event..
 		var screen;
@@ -250,6 +253,7 @@
 		} else {
 			screen = this.tiltWrapper;
 		}
+		this.screen = screen;
 		screen.addEventListener('mousemove', this.trackOn.bind(this));
 
 		// reset all when mouse leaves the main wrapper.
