@@ -359,7 +359,9 @@
 		[].slice.call(document.querySelectorAll('img.tilt-effect')).forEach(function(img) {
 			tiltOptions = JSON.parse(img.getAttribute('data-tilt-options'));
 			//t = new TiltFx(img, JSON.parse(img.getAttribute('data-tilt-options')));
-			tiltFxArr.push(eval(tiltOptions.id = new TiltFx(img, JSON.parse(img.getAttribute('data-tilt-options')))));
+		//	tiltFxArr.push(eval(tiltOptions.id = new TiltFx(img, JSON.parse(img.getAttribute('data-tilt-options')))));
+			dexter = new TiltFx(img, JSON.parse(img.getAttribute('data-tilt-options')));
+			tiltFxArr.push(dexter);
 		});
 		window.tiltFxArr = tiltFxArr;
 	}
