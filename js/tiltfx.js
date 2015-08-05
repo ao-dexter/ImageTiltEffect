@@ -192,6 +192,7 @@
 		var self = this,
 			screen = self.screen,
 			moveOpts = self.options.movement;
+		console.dir(screen);
 		requestAnimationFrame(function() {
 					// mouse position relative to the document.
 				var mousepos = getMousePos(ev),
