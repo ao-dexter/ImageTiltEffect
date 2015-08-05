@@ -122,6 +122,8 @@
 	 * TiltFx options.
 	 */
 	TiltFx.prototype.options = {
+		// **delay in ms before events/listeners called
+		delay: 0,
 		// **track mouse
 		trackMouse : true,
 		// **el or selector** triggers mouse movement on el outside of layer
@@ -283,11 +285,13 @@
     
     TiltFx.prototype.start = function(){
     var self = this;
+    setTimeout(function(){
     if(self.options.shake > 0){
       self.shakeOn();
     } else {
       self.addListeners();
     }
+    }, self.options.delay);
   }
     
   TiltFx.prototype.stop = function(){
