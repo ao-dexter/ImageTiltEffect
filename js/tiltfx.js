@@ -250,10 +250,10 @@
 		} else {
 			screen = this.tiltWrapper;
 		}
-		this.tiltWrapper.addEventListener('mousemove', this.trackOn.bind(this));
+		screen.addEventListener('mousemove', this.trackOn.bind(this));
 
 		// reset all when mouse leaves the main wrapper.
-		this.tiltWrapper.addEventListener('mouseleave', this.trackOff.bind(this));
+		screen.addEventListener('mouseleave', this.trackOff.bind(this));
 
 		// window resize
 		window.addEventListener('resize', throttle(function(ev) {
