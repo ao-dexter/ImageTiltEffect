@@ -82,6 +82,11 @@
 			y : posy
 		}
 	}
+	
+	function getRandomPos() {
+		var rndI = Math.floor(Math.random() * 200);
+		return posArr[rndI];
+	}
 
 	// from http://www.sberry.me/articles/javascript-event-throttling-debouncing
 	function throttle(fn, delay) {
@@ -194,9 +199,15 @@
 			moveOpts = self.options.movement;
 		requestAnimationFrame(function() {
 					// mouse position relative to the document.
-				var mousepos = getMousePos(ev),
+					var mousepos;
+					if(self.trackMouse){
+						mousepos = getMousePos(ev);
+					} else {
+						mousepos = getRandomPos();
+					}
+					
 					// document scrolls.
-					docScrolls = {left : document.body.scrollLeft + document.documentElement.scrollLeft, top : document.body.scrollTop + document.documentElement.scrollTop},
+					var docScrolls = {left : document.body.scrollLeft + document.documentElement.scrollLeft, top : document.body.scrollTop + document.documentElement.scrollTop},
 					bounds = screen.getBoundingClientRect(),
 					// mouse position relative to the main element (tiltWrapper).
 					relmousepos = {
@@ -254,10 +265,22 @@
 			screen = this.tiltWrapper;
 		}
 		this.screen = screen;
+		
+		if(self.options.trackMouse && self.options.auto && (self.options.shake === null || self.options.shake == 0)){
 		screen.addEventListener('mousemove', this.trackOn.bind(this));
 
 		// reset all when mouse leaves the main wrapper.
 		screen.addEventListener('mouseleave', this.trackOff.bind(this));
+		}
+		
+		if(!self.options.trackMouse && self.options.auto && self.options.shake > 0){
+			setInterval(function(){
+				this.trackOn(null);
+			}, self.options.shake)
+			
+		}
+		
+		
 
 		// window resize
 		window.addEventListener('resize', throttle(function(ev) {
