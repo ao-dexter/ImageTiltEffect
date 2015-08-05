@@ -84,8 +84,12 @@
 	}
 	
 	function getRandomPos() {
+    if(window.posArr){
 		var rndI = Math.floor(Math.random() * 200);
 		return posArr[rndI];
+    } else {
+      return {x:0,y:0};
+    }
 	}
 
 	// from http://www.sberry.me/articles/javascript-event-throttling-debouncing
@@ -200,7 +204,7 @@
 		requestAnimationFrame(function() {
 					// mouse position relative to the document.
 					var mousepos;
-					if(self.options.trackMouse){
+					if(ev !== null){
 						mousepos = getMousePos(ev);
 					} else {
 						mousepos = getRandomPos();
@@ -242,7 +246,60 @@
 				el.style.transform = 'perspective(' + moveOpts.perspective + 'px) translate3d(0,0,0) rotate3d(1,1,1,0deg)';
 			}	
 		}, 60);	
+	};
+  
+
+  
+  TiltFx.prototype.addListeners = function(ev){
+		var self = this;
+    var screen = self.screen;
+    screen.addEventListener('mousemove', self.mouseOn);
+		screen.addEventListener('mouseleave', self.mouseOff);
 	}
+  
+  TiltFx.prototype.removeListeners = function(){
+		var self = this;
+    var screen = self.screen;
+
+    screen.removeEventListener('mousemove', self.mouseOn);
+		screen.removeEventListener('mouseleave', self.mouseOff);
+	}
+  
+  TiltFx.prototype.shakeOff = function(){
+    var self = this;
+    if(self.shakeTimer){
+     clearInterval(self.shakeTimer);
+     self.trackOff(null);
+    }
+  }
+  
+    TiltFx.prototype.shakeOn = function(){
+    var self = this;
+    self.shakeTimer = setInterval(function(){
+       self.trackOn(null) ;
+      }, self.options.shake);
+  }
+    
+    
+    TiltFx.prototype.start = function(){
+    var self = this;
+    if(self.options.shake > 0){
+      self.shakeOn();
+    } else {
+      self.addListeners();
+    }
+  }
+    
+  TiltFx.prototype.stop = function(){
+    var self = this;
+    if(self.shakeTimer){
+      self.shakeOff();
+    } else {
+      self.removeListeners();
+    }
+  }
+  
+  
 
 	/**
 	 * Initialize the events on the main wrapper.
@@ -255,7 +312,7 @@
 		// mousemove event..
 		var screen;
 		if(self.options.mouseTarget !== null){
-			console.log(self.options.mouseTarget);
+			
 			if(self.options.mouseTarget == 'parent'){
 				screen = this.tiltWrapper.parentElement;
 			} else {
@@ -265,20 +322,23 @@
 			screen = this.tiltWrapper;
 		}
 		this.screen = screen;
+    this.mouseOff = this.trackOff.bind(this);
+    this.mouseOn = this.trackOn.bind(this);
 		
 		if(self.options.trackMouse && self.options.auto && (self.options.shake === null || self.options.shake == 0)){
-		screen.addEventListener('mousemove', this.trackOn.bind(this));
+	//	screen.addEventListener('mousemove', this.trackOn.bind(this));
 
 		// reset all when mouse leaves the main wrapper.
-		screen.addEventListener('mouseleave', this.trackOff.bind(this));
+	//	screen.addEventListener('mouseleave', this.trackOff.bind(this));
+      self.addListeners();
 		}
 		
 		if(!self.options.trackMouse && self.options.auto && self.options.shake > 0){
-			setInterval(this.trackOn(), self.options.shake);
+			self.shakeOn();
 		}
 		
-		
 
+	
 		// window resize
 		window.addEventListener('resize', throttle(function(ev) {
 			// recalculate tiltWrapper properties: width/height/left/top
