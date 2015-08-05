@@ -113,6 +113,14 @@
 	 * TiltFx options.
 	 */
 	TiltFx.prototype.options = {
+		// **track mouse
+		trackMouse : true,
+		// **el or selector** triggers mouse movement on el outside of layer
+		mouseTarget : null,
+		// random movement (e.g. shaking) in ms
+		shake : null,
+		// autoInitiate layer
+		auto : true,
 		// number of extra image elements (div with background-image) to add to the DOM - min:1, max:5 (for a higher number, it's recommended to remove the transitions of .tilt__front in the stylesheet.
 		extraImgs : 2,
 		// the opacity value for all the image elements.
@@ -179,17 +187,9 @@
 		// tiltWrapper properties: width/height/left/top
 		this.view = { width : this.tiltWrapper.offsetWidth, height : this.tiltWrapper.offsetHeight };
 	};
-
-	/**
-	 * Initialize the events on the main wrapper.
-	 */
-	TiltFx.prototype._initEvents = function() {
-		var self = this,
-			moveOpts = self.options.movement;
-
-		// mousemove event..
-		this.tiltWrapper.addEventListener('mousemove', function(ev) {
-			requestAnimationFrame(function() {
+	
+	TiltFx.prototype.trackOn = function(ev){
+		requestAnimationFrame(function() {
 					// mouse position relative to the document.
 				var mousepos = getMousePos(ev),
 					// document scrolls.
@@ -215,7 +215,27 @@
 					el.style.transform = 'perspective(' + moveOpts.perspective + 'px) translate3d(' + transX + 'px,' + transY + 'px,' + transZ + 'px) rotate3d(1,0,0,' + rotX + 'deg) rotate3d(0,1,0,' + rotY + 'deg) rotate3d(0,0,1,' + rotZ + 'deg)';
 				}
 			});
-		});
+	}
+
+	/**
+	 * Initialize the events on the main wrapper.
+	 */
+	TiltFx.prototype._initEvents = function() {
+		var self = this,
+			moveOpts = self.options.movement;
+
+		// mousemove event..
+		var screen;
+		if(self.options.mouseTarget !== null){
+			if(self.options.mouseTarget == 'parent'){
+				screen = this.tiltWrapper.parentElement;
+			} else {
+				screen = document.querySelector(self.options.mouseTarget);
+			}
+		} else {
+			screen = this.tiltWrapper;
+		}
+		this.tiltWrapper.addEventListener('mousemove', this.trackOn);
 
 		// reset all when mouse leaves the main wrapper.
 		this.tiltWrapper.addEventListener('mouseleave', function(ev) {
