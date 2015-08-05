@@ -189,6 +189,7 @@
 	};
 	
 	TiltFx.prototype.trackOn = function(ev){
+		var self = this;
 		requestAnimationFrame(function() {
 					// mouse position relative to the document.
 				var mousepos = getMousePos(ev),
@@ -235,7 +236,7 @@
 		} else {
 			screen = this.tiltWrapper;
 		}
-		this.tiltWrapper.addEventListener('mousemove', this.trackOn);
+		this.tiltWrapper.addEventListener('mousemove', this.trackOn.bind(this));
 
 		// reset all when mouse leaves the main wrapper.
 		this.tiltWrapper.addEventListener('mouseleave', function(ev) {
