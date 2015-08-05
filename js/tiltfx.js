@@ -220,7 +220,8 @@
 	}
 	
 	TiltFx.prototype.trackOff = function(ev){
-		var self = this;
+		var self = this, 
+			moveOpts = self.options.movement;
 		setTimeout(function() {
 			for(var i = 0, len = self.imgElems.length; i < len; ++i) {
 				var el = self.imgElems[i];
