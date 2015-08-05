@@ -194,6 +194,8 @@
 		// add it to the DOM and remove original img element.
 		this.el.parentNode.insertBefore(this.tiltWrapper, this.el);
 		this.el.parentNode.removeChild(this.el);
+		
+		this.tiltWrapper.setAttribute('data-tilt', this.options.id);
 
 		// tiltWrapper properties: width/height/left/top
 		this.view = { width : this.tiltWrapper.offsetWidth, height : this.tiltWrapper.offsetHeight };
@@ -355,10 +357,9 @@
 		tiltFxArr = [];
 		// search for imgs with the class "tilt-effect"
 		[].slice.call(document.querySelectorAll('img.tilt-effect')).forEach(function(img) {
-			thisTilt = {};
-			slideIndex = img.parentElement.getAttribute('data-swiper-slide-index');
-			thisTilt[parseInt(slideIndex)] = new TiltFx(img, JSON.parse(img.getAttribute('data-tilt-options')));
-			tiltFxArr.push(thisTilt);
+			tiltOptions = JSON.parse(img.getAttribute('data-tilt-options'));
+			//t = new TiltFx(img, JSON.parse(img.getAttribute('data-tilt-options')));
+			tiltFxArr.push(eval(tiltOptions.id = new TiltFx(img, JSON.parse(img.getAttribute('data-tilt-options')))));
 		});
 		window.tiltFxArr = tiltFxArr;
 	}
