@@ -218,6 +218,17 @@
 				}
 			});
 	}
+	
+	TiltFx.prototype.trackOff = function(ev){
+		var self = this;
+		setTimeout(function() {
+			for(var i = 0, len = self.imgElems.length; i < len; ++i) {
+				var el = self.imgElems[i];
+				el.style.WebkitTransform = 'perspective(' + moveOpts.perspective + 'px) translate3d(0,0,0) rotate3d(1,1,1,0deg)';
+				el.style.transform = 'perspective(' + moveOpts.perspective + 'px) translate3d(0,0,0) rotate3d(1,1,1,0deg)';
+			}	
+		}, 60);	
+	}
 
 	/**
 	 * Initialize the events on the main wrapper.
@@ -240,16 +251,7 @@
 		this.tiltWrapper.addEventListener('mousemove', this.trackOn.bind(this));
 
 		// reset all when mouse leaves the main wrapper.
-		this.tiltWrapper.addEventListener('mouseleave', function(ev) {
-			setTimeout(function() {
-			for(var i = 0, len = self.imgElems.length; i < len; ++i) {
-				var el = self.imgElems[i];
-				el.style.WebkitTransform = 'perspective(' + moveOpts.perspective + 'px) translate3d(0,0,0) rotate3d(1,1,1,0deg)';
-				el.style.transform = 'perspective(' + moveOpts.perspective + 'px) translate3d(0,0,0) rotate3d(1,1,1,0deg)';
-			}	
-			}, 60);
-			
-		});
+		this.tiltWrapper.addEventListener('mouseleave', this.trackOff.bind(this));
 
 		// window resize
 		window.addEventListener('resize', throttle(function(ev) {
