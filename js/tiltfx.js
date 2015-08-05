@@ -356,7 +356,7 @@
 		// search for imgs with the class "tilt-effect"
 		[].slice.call(document.querySelectorAll('img.tilt-effect')).forEach(function(img) {
 			thisTilt = new TiltFx(img, JSON.parse(img.getAttribute('data-tilt-options')));
-			tiltFxArr.push(thisTile);
+			tiltFxArr.push(thisTilt);
 		});
 		window.tiltFxArr = tiltFxArr;
 	}
