@@ -83,6 +83,18 @@
 		}
 	}
 	
+	    var cxPoint = 0;  
+  	function getCustomPath() {
+    if(window.matrix){
+     if(cxPoint >= matrix.length){
+       cxPoint = 0;
+     }
+		return matrix[cxPoint++];
+    } else {
+      return {x:0,y:0};
+    }
+	}
+	
 	function getRandomPos() {
     if(window.posArr){
 		var rndI = Math.floor(Math.random() * 200);
@@ -138,6 +150,8 @@
 		opacity : 0.7,
 		// by default the first layer does not move.
 		bgfixed : true,
+		// custompath
+		customPath : false,
 		// image element's movement configuration
 		movement : {
 			perspective : 1000, // perspective value
@@ -211,7 +225,11 @@
 					if(ev !== null){
 						mousepos = getMousePos(ev);
 					} else {
+						if(self.options.customPath){
+              						mousepos = getCustomPath();
+            					} else {
 						mousepos = getRandomPos();
+            					}
 					}
 					
 					// document scrolls.
